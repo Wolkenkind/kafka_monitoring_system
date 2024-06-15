@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS metrics(id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, metric_id VARCHAR(255), metric_value REAL, auto_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS metrics_stat(metric_id VARCHAR(255) PRIMARY KEY, metric_max real, metric_min real, metric_sum real, metric_avg real, metric_median real)

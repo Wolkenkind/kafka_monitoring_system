@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: homework_kafka_producer
+homeworkApp:
+  actuatorMetricsSend:
+    enabled: true
+#  metricsTopicPartitions: 2
+#  metricsTopicReplication: 1
+
+server:
+  port: 18088

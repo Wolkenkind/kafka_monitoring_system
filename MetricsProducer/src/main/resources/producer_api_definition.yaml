@@ -1,0 +1,64 @@
+openapi: 3.0.0
+info:
+    title: Spring Kafka Homework Metrics API
+    description: >
+        This is Metrics API specification written using OpenAPI specification. It elaborates on how to provide metrics information for the monitoring system.
+    contact:
+        email: a-tumanov@yandex.ru
+    version: 1.0.0
+servers:
+    - url: http://localhost/
+paths:
+    /metrics:
+      post:
+        summary: Send application metric in JSON format
+        description: Send application metric in key-value format. Only numeric values are currently supported
+        operationId: postMetrics
+        requestBody: 
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/MetricBody'
+        responses: 
+          '202':
+            $ref:  '#/components/responses/MetricPostAcceptedResponse'
+          '500':
+            $ref:  '#/components/responses/InternalErrorResponse'
+    
+components:
+    schemas: 
+      MetricBody:
+        type: object
+        properties:
+          key:
+            type: string
+            example: visit_counter_total
+          value:
+            type: number
+            format: float
+            example: 32
+    responses: 
+      MetricPostAcceptedResponse:
+        description: metric created and accepted for further processing
+        content: 
+          application/json: 
+            schema: 
+              title: MetricPostAcceptedResponse
+              type: object
+              properties: 
+                information:
+                  type: string
+                  example: Metric created and accepted for further processing
+      InternalErrorResponse:
+        description: internal error
+      NotImplementedResponse:
+        description: functionality not implemented yet
+        content:
+          application/json: 
+            schema: 
+              title: NotImplementedResponse
+              type: object
+              properties: 
+                information:
+                  type: string
+                  example: Processing of string values is currently not implemented

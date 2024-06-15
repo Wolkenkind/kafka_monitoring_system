@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+    title: Spring Kafka Homework Metrics API
+    description: >
+        This is Metrics API specification written using OpenAPI specification. It elaborates on how to get metrics information and statistics from the monitoring system.
+    contact:
+        email: a-tumanov@yandex.ru
+    version: 1.0.0
+servers:
+    - url: http://localhost/
+paths:
+    /metrics:
+      get:
+        summary: Get metrics data
+        description: Returns data about submitted metrics from monitoring system
+        operationId: getAllMetrics
+        responses: 
+          '200':
+            $ref:  '#/components/responses/AllMetricsResponse'
+          '404':
+            $ref:  '#/components/responses/ResourceNotFound'
+          '500':
+            $ref:  '#/components/responses/InternalErrorResponse'
+    /metrics/{id}:
+      get:
+        summary: Get metric data
+        description: Returns data about specified metric from monitoring system
+        operationId: getMetricById
+        parameters: 
+          - name: id
+            in: path
+            description: Metric id
+            required: true
+            schema: 
+              type: string
+        responses: 
+          '200':
+            $ref: '#/components/responses/MetricResponse'
+          '404':
+            $ref:  '#/components/responses/ResourceNotFound'
+          '500':
+            $ref:  '#/components/responses/InternalErrorResponse'
+components:
+    schemas: 
+      MetricRecord:
+        type: object
+        properties: 
+          metricId:
+            type: string
+            example: satCounter
+          metricLastValue:
+            type: number
+            format: float
+            example: 42
+          metricMax:
+            type: number
+            format: float
+            example: 21.1134
+          metricMin:
+            type: number
+            format: float
+            example: 0.211134
+          metricMean:
+            type: number
+            format: float
+            example: 24.1
+          metricSum:
+            type: number
+            format: float
+            example: 100500
+          metricMedian:
+            type: number
+            format: float
+            example: 12
+
+    responses:
+      AllMetricsResponse:
+        description: information about all metrics submitted to the system
+        content: 
+          application/json: 
+            schema: 
+              title: AllMetricsResponse
+              type: array
+              items: 
+                $ref: '#/components/schemas/MetricRecord'
+      MetricResponse:
+        description: information about metric submitted to the system
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/MetricRecord'
+      InternalErrorResponse:
+        description: internal error
+      ResourceNotFound:
+        description: resource not found
